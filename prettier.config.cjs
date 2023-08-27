@@ -1,4 +1,4 @@
 module.exports = {
-  tailwindConfig: "./tailwind.config.js",
+  tailwindConfig: "./tailwind.config.cjs",
   plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-packagejson"],
 };
