@@ -34,6 +34,6 @@ export default defineConfig(() => {
     optimizeDeps: {
       include: ["react/jsx-runtime"],
     },
-    base: '/audio-components/',
+    base: "/react-audio-playground/",
   };
 });
