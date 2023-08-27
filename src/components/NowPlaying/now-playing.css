@@ -1,0 +1,5 @@
+.thumbnail {
+  aspect-ratio: 1 / 1;
+  height: 64px;
+  display: inline-block;
+}

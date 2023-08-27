@@ -15,6 +15,9 @@
         "useMediaCaption": {
           "level": "off"
         }
+      },
+      "nursery": {
+        "noConsoleLog": "error"
       }
     },
     "ignore": ["dist/**/*.js"]

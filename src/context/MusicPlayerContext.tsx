@@ -13,6 +13,7 @@ interface MusicPlayerContextProviderProps {
 export interface NowPlayingData {
   playingRef?: React.RefObject<HTMLAudioElement>;
   playingCredit?: string;
+  playingArtUrl?: string;
 }
 
 export interface MusicPlayerContextProps {

@@ -1,5 +1,12 @@
 import PlayButton from "@/components/PlayButton";
-import { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import {
+  KeyboardEvent,
+  MouseEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { MusicPlayerContext } from "@/context/MusicPlayerContext";
 import type { MusicPlayerContextProps } from "@/context/MusicPlayerContext";
 
@@ -49,11 +56,15 @@ export default function MusicWithCoverArt({
       return;
     }
     if (isPlaying) {
-      setNowPlayingData({ playingRef: audioRef, playingCredit: songCredit });
+      setNowPlayingData({
+        playingRef: audioRef,
+        playingCredit: songCredit,
+        playingArtUrl: imageUrl,
+      });
       audioRef.current.play();
     } else {
       if (nowPlayingData?.playingRef === audioRef) {
-        setNowPlayingData({ playingRef: undefined, playingCredit: songCredit });
+        setNowPlayingData({ ...nowPlayingData, playingRef: undefined });
       }
       audioRef.current.pause();
     }
@@ -64,13 +75,17 @@ export default function MusicWithCoverArt({
   ) {
     event.preventDefault();
 
-    if (["Enter", " "].includes(event.key)) {
-      togglePlaying();
+    if (["Space"].includes(event.code)) {
+      // Enter is apparently handled by the MouseEvent
+      togglePlaying(event);
     }
   }
 
-  async function togglePlaying() {
-    console.log("arrived in TogglePlaying");
+  async function togglePlaying(
+    event: KeyboardEvent<HTMLButtonElement> | MouseEvent<HTMLButtonElement>,
+  ) {
+    event.preventDefault();
+
     if (!setNowPlayingData || !audioRef.current) {
       return;
     }
