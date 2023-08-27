@@ -1,0 +1,37 @@
+.button-overlay-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.music-player {
+  display: block;
+  block-size: fit-content;
+  width: fit-content;
+  height: fit-content;
+  margin: 10px;
+  height: 256px;
+  width: 256px;
+}
+
+.play-button:hover {
+  transform: scale(1.25);
+}
+
+.button-overlay-wrap img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.button-overlay-wrap .play-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 25%;
+  margin-top: 25%;
+  opacity: 0.2;
+  aspect-ratio: 1 / 1;
+  max-width: 50%;
+  height: auto;
+  transition: transform 300ms ease-in-out;
+}

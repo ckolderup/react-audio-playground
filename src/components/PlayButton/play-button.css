@@ -1,0 +1,21 @@
+.triangle, .pauseboxes {
+  fill:white;
+  stroke:white;
+  stroke-width: 1;
+}
+
+.pause .triangle {
+  display: visible;
+}
+
+.pause .pauseboxes {
+  display: none;
+}
+
+.play .triangle {
+  display: none;
+}
+
+.play .pauseboxes {
+  display: visible;
+}
