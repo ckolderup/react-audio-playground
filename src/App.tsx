@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import useDebugRender from "tilg";
 import { MusicPlayerContextProvider } from "@/context/MusicPlayerContext";
-import { VolumeControl } from "./components/VolumeControl";
+import NowPlaying from "./components/NowPlaying";
 
 export default function App() {
   useDebugRender();
@@ -10,7 +10,7 @@ export default function App() {
   return (
     <Fragment>
       <MusicPlayerContextProvider>
-        <VolumeControl/>
+        <NowPlaying />
         <Outlet />
         <ScrollRestoration />
       </MusicPlayerContextProvider>

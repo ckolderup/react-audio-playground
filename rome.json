@@ -10,7 +10,12 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "a11y": {
+        "useMediaCaption": {
+          "level": "off"
+        }
+      }
     },
     "ignore": ["dist/**/*.js"]
   }

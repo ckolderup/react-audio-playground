@@ -1,9 +1,9 @@
-import PlayButton from '@/components/PlayButton';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { MusicPlayerContext } from '@/context/MusicPlayerContext';
-import type { MusicPlayerContextProps } from '@/context/MusicPlayerContext';
+import PlayButton from "@/components/PlayButton";
+import { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import { MusicPlayerContext } from "@/context/MusicPlayerContext";
+import type { MusicPlayerContextProps } from "@/context/MusicPlayerContext";
 
-import './music-with-cover-art.css';
+import "./music-with-cover-art.css";
 
 interface MusicWithCoverArtProps {
   className?: string;
@@ -12,50 +12,89 @@ interface MusicWithCoverArtProps {
   songCredit: string;
 }
 
-
-// TODO: use AudioContext from MusicPlayerContext to make it more seamless when switching between songs
-export default function MusicWithCoverArt({ audioUrl, imageUrl, songCredit, className }: MusicWithCoverArtProps) {
+export default function MusicWithCoverArt({
+  audioUrl,
+  imageUrl,
+  songCredit,
+  className,
+}: MusicWithCoverArtProps) {
   const [isPlaying, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  const { playingRef, setPlayingRef, volume} = useContext<MusicPlayerContextProps | undefined>(MusicPlayerContext) || {};
+  const { volume, nowPlayingData, setNowPlayingData } =
+    useContext<MusicPlayerContextProps | undefined>(MusicPlayerContext) || {};
 
   useEffect(() => {
-    if (playingRef == audioRef) { return; }
-    if (!audioRef.current) { return; }
+    if (nowPlayingData?.playingRef === audioRef) {
+      return;
+    }
+    if (!audioRef.current) {
+      return;
+    }
 
     setPlaying(false);
-  }, [playingRef]);
+  }, [nowPlayingData?.playingRef]);
 
   useEffect(() => {
-    if (!audioRef.current) { return; }
-    audioRef.current.volume = volume || 1.0;
-  }, [volume])
+    if (!audioRef.current || !volume) {
+      return;
+    }
+    audioRef.current.volume = volume;
+  }, [volume]);
 
   useEffect(() => {
-    if (!audioRef.current) { return; }
+    if (!setNowPlayingData) {
+      return;
+    }
+    if (!audioRef.current) {
+      return;
+    }
     if (isPlaying) {
+      setNowPlayingData({ playingRef: audioRef, playingCredit: songCredit });
       audioRef.current.play();
     } else {
+      if (nowPlayingData?.playingRef === audioRef) {
+        setNowPlayingData({ playingRef: undefined, playingCredit: songCredit });
+      }
       audioRef.current.pause();
     }
   }, [isPlaying]);
 
+  async function togglePlayingViaKeyboard(
+    event: KeyboardEvent<HTMLButtonElement>,
+  ) {
+    event.preventDefault();
+
+    if (["Enter", " "].includes(event.key)) {
+      togglePlaying();
+    }
+  }
+
   async function togglePlaying() {
-    if (!setPlayingRef || !audioRef.current) { return; }
+    console.log("arrived in TogglePlaying");
+    if (!setNowPlayingData || !audioRef.current) {
+      return;
+    }
 
     const nowPlaying = !isPlaying;
-    setPlayingRef(audioRef);
     setPlaying(nowPlaying);
   }
 
   return (
     <div className={`music-player ${className}`}>
       <audio hidden src={audioUrl} ref={audioRef} />
-      <div className="button-overlay-wrap" onClick={togglePlaying}>
-        <img className="cover-art" src={imageUrl} alt={`key art for song ${songCredit}`} />
-        <PlayButton className={`play-button ${isPlaying ? 'play' : 'pause'}`} />
-      </div>
+      <button
+        type="button"
+        className="button-overlay-wrap"
+        onKeyUp={togglePlayingViaKeyboard}
+        onClick={togglePlaying}
+      >
+        <img
+          className="cover-art"
+          src={imageUrl}
+          alt={`key art for song ${songCredit}`}
+        />
+        <PlayButton className={`play-button ${isPlaying ? "play" : "pause"}`} />
+      </button>
     </div>
   );
 }

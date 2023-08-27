@@ -1,22 +1,33 @@
-import { MusicPlayerContext, MusicPlayerContextProps } from '@/context/MusicPlayerContext';
-import { ChangeEvent, useContext } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-export function VolumeControl() {
-  const { volume, setVolume } = useContext<MusicPlayerContextProps | undefined>(MusicPlayerContext) || { volume: 1.0 };
+interface VolumeControlProps {
+  volume: number | undefined;
+  setVolume: Dispatch<SetStateAction<number>> | null | undefined;
+}
 
+export function VolumeControl({ volume, setVolume }: VolumeControlProps) {
   function handleVolumeChange(event: ChangeEvent<HTMLInputElement>) {
-    if (!setVolume) { return };
+    if (!setVolume) {
+      return;
+    }
 
     setVolume(parseInt(event.target.value) / 100);
   }
+
   return (
-    <input
-      type="range"
-      min="1"
-      max="100"
-      value={volume * 100}
-      onChange={handleVolumeChange}
-      className="volume-control"
-    />
+    <div>
+      <label>
+        volume {/* TODO: replace with icon, make it clickable to mute*/}
+        <input
+          disabled={!(volume && setVolume)}
+          type="range"
+          min="1"
+          max="100"
+          value={(volume || 1) * 100}
+          onChange={handleVolumeChange}
+          className="volume-control"
+        />
+      </label>
+    </div>
   );
 }
