@@ -11,7 +11,7 @@ const root = createRoot(container);
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/react-audio-playground/",
     element: <App />,
     children: routes,
     errorElement: <div>error</div>,
@@ -25,5 +25,5 @@ if (import.meta.hot) {
 root.render(
   <StrictMode>
     <RouterProvider router={router} fallbackElement={<div>loading...</div>} />
-  </StrictMode>
+  </StrictMode>,
 );

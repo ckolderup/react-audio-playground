@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: false
-  excludeLinksFromLockfile: false
-
 dependencies:
   rc-basic:
     specifier: 1.1.0
@@ -46,6 +42,9 @@ devDependencies:
   lint-staged:
     specifier: 14.0.0
     version: 14.0.0
+  pnpm:
+    specifier: 8.7.0
+    version: 8.7.0
   postcss:
     specifier: 8.4.28
     version: 8.4.28
@@ -1456,6 +1455,12 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
+  /pnpm@8.7.0:
+    resolution: {integrity: sha512-HWH4wQ6KWl2/vd6g8fXvt9vVF3IjBzrslTzyMKpGQWiEuUJ6ZCHbp48orQ+T++3ji6VwgyN7NQJD3mseOoznHQ==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    dev: true
+
   /postcss-import@15.1.0(postcss@8.4.28):
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
@@ -2050,3 +2055,7 @@ packages:
     resolution: {integrity: sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==}
     engines: {node: '>= 14'}
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
