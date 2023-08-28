@@ -3,9 +3,14 @@ import { ChangeEvent, Dispatch, SetStateAction } from "react";
 interface VolumeControlProps {
   volume: number | undefined;
   setVolume: Dispatch<SetStateAction<number>> | null | undefined;
+  className?: string;
 }
 
-export function VolumeControl({ volume, setVolume }: VolumeControlProps) {
+export function VolumeControl({
+  volume,
+  setVolume,
+  className,
+}: VolumeControlProps) {
   function handleVolumeChange(event: ChangeEvent<HTMLInputElement>) {
     if (!setVolume) {
       return;
@@ -15,7 +20,7 @@ export function VolumeControl({ volume, setVolume }: VolumeControlProps) {
   }
 
   return (
-    <div>
+    <div className={className}>
       <label>
         volume {/* TODO: replace with icon, make it clickable to mute*/}
         <input
