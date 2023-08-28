@@ -9,6 +9,10 @@
   z-index: 5;
 }
 
+.now-playing.no-volume {
+  grid-template-columns: 64px 1fr;
+}
+
 .thumbnail-wrapper {
   background-color: hsl(0, 0%, 100%);
   aspect-ratio: 1 / 1;

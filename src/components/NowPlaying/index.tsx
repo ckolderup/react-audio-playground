@@ -19,19 +19,49 @@ function didOverflow(el: HTMLDivElement | null) {
   }
 }
 
+function testForVolumeControlAccess(): Promise<boolean> {
+  const timeoutPromise = new Promise<boolean>((resolve) =>
+    setTimeout(resolve, 1e2, false),
+  );
+  const promise = new Promise<boolean>((resolve) => {
+    let audio: HTMLAudioElement | null = document.createElement("audio");
+    const handler = () => {
+      audio?.removeEventListener("volumechange", handler);
+      audio = null;
+
+      resolve(true);
+    };
+
+    audio.addEventListener("volumechange", handler);
+
+    audio.volume = 0.5;
+  });
+
+  return Promise.race([promise, timeoutPromise]);
+}
+
 export default function NowPlaying() {
   const { volume, setVolume, nowPlayingData } =
     useContext<MusicPlayerContextProps | undefined>(MusicPlayerContext) || {};
   const textInfoRef = useRef(null);
+  const [showVolumeControl, setShowVolumeControl] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [textInfoDidOverflow, setTextInfoDidOverflow] = useState(false);
-  const textInfo = nowPlayingData?.playingCredit || "Nothing playing";
-
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
 
   useEffect(() => {
+    const volumeControlWrapper = async () => {
+      try {
+        setShowVolumeControl(await testForVolumeControlAccess());
+      } catch {
+        setShowVolumeControl(false);
+      }
+    };
+
+    volumeControlWrapper();
+
     window.addEventListener("resize", handleResize, false);
   }, []);
 
@@ -39,8 +69,10 @@ export default function NowPlaying() {
     setTextInfoDidOverflow(didOverflow(textInfoRef?.current));
   }, [nowPlayingData, windowWidth]);
 
+  const textInfo = nowPlayingData?.playingCredit || "Nothing playing";
+
   return (
-    <div className="now-playing">
+    <div className={`now-playing ${showVolumeControl ? "" : "no-volume"}`}>
       {/* TODO: use superimposed icons on thumbnail */}
       <div className="thumbnail-wrapper">
         <img
@@ -73,7 +105,13 @@ export default function NowPlaying() {
           </div>
         )}
       </div>
-      <VolumeControl className="volume" volume={volume} setVolume={setVolume} />
+      {showVolumeControl && (
+        <VolumeControl
+          className="volume"
+          volume={volume}
+          setVolume={setVolume}
+        />
+      )}
     </div>
   );
 }
